@@ -1,0 +1,26 @@
+{
+    "title": "Test Deck 1",
+    "questions": [
+        {
+            "question_type": "normal",
+            "question": "Fecha de nacimiento",
+            "right_answers": ["Nací un turtuoso año en 1945, fecha en la que mi madre me parió en una bañera"],
+            "wrong_answers": [""],
+            "tags": ["comida", "favoritismo"]
+        },
+        {
+            "question_type": "normal",
+            "question": "Comida favorita",
+            "right_answers": ["manzana"],
+            "wrong_answers": [""],
+            "tags": ["comida", "favoritismo"]
+        },
+        {
+            "question_type": "normal",
+            "question": "color favorito",
+            "right_answers": ["rojo"],
+            "wrong_answers": [""],
+            "tags": ["a", "b", "c", "tag2"]
+        }
+    ]
+}
