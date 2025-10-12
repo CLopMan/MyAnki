@@ -9,6 +9,7 @@ class QuestionWidget(QWidget):
         self.exercise: QLabel = self.create_exercise()
         self.answer: QLabel = self.create_answer()
         self.show_button: QPushButton = QPushButton("SHOW ANSWER")
+        self.value = question.value
 
         layout = QVBoxLayout()
         layout.addWidget(self.exercise)
@@ -17,6 +18,10 @@ class QuestionWidget(QWidget):
         self.show_button.clicked.connect(self.show_answer)
         self.setLayout(layout)
         self.setFixedSize(EXERCISE_WIDTH, EXERCISE_HEIGHT)
+
+    @property
+    def is_answered(self):
+        return self.answer.isVisible()
 
     def create_answer(self):
         return NotImplemented

@@ -1,5 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel
+from typing import Optional
 
 class QuestionType(Enum):
     multi_select = "multi-select"
@@ -11,4 +12,5 @@ class QuestionDto(BaseModel):
     question_type: QuestionType
     right_answers: list[str]
     wrong_answers: list[str]
+    value: Optional[int] = None
     tags: list[str]

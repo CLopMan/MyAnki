@@ -7,7 +7,7 @@ class NormalQuestionWidget(QuestionWidget):
     def __init__(self, question: NormalQuestion):
         super().__init__(question)
         self.data: NormalQuestion = question # not necesary. Added for typehinting in the editor
-        #self.setStyleSheet("border: 1px solid red")
+        self.setStyleSheet("border: 1px solid red")
 
     def create_exercise(self) -> QLabel:
         result = QLabel(self.data.question)

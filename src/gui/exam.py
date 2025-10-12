@@ -3,6 +3,7 @@ from data_objects.normal_question import NormalQuestion
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QGridLayout, QProgressBar
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from gui.question_widget import QuestionWidget
 from gui.normal_question_widget import NormalQuestionWidget
 from constants.gui_constants import EXERCISE_WIDTH
 
@@ -17,6 +18,7 @@ class Exam(QWidget):
         self.sequence = sequence
         self.curr_index = 0
         self.questions = self.__get_questions(layout)
+        self.questions_answer = [False for _ in range(0, len(self.questions))]
         self.answered: int = 0
 
         layout.addWidget(self.title(), 0, 0, 1, 3, Qt.AlignHCenter)
@@ -57,6 +59,7 @@ class Exam(QWidget):
         bar.setMaximum(len(self.sequence))
         bar.setMinimum(0)
         bar.setValue(0)
+        bar.setFixedWidth(EXERCISE_WIDTH - 20)
         return bar
 
     def update_progress_bar(self):
@@ -72,7 +75,7 @@ class Exam(QWidget):
         return title
 
     def __get_questions(self, layout: QGridLayout) -> list[QWidget]:
-        result: list[QWidget] =  []
+        result: list[QuestionWidget] =  []
         cards = self.deck.questions
         for i in self.sequence:
             question = cards[i]
@@ -93,8 +96,13 @@ class Exam(QWidget):
         self.questions[self.curr_index].setVisible(True)
         self.__update_index()
 
+    def _answer(self, index):
+        self.questions_answer[index] = True
+
     def __update_answered(self):
-        self.answered += 1
+        question: QuestionWidget = self.questions[self.curr_index]
+        self.answered += question.value * int(not self.questions_answer[self.curr_index])
+        self._answer(self.curr_index)
         self.update_progress_bar()
 
     def __update_index(self):
