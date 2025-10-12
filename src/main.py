@@ -1,8 +1,7 @@
-import json 
 import random
 from gui.mainwindow import *
 from gui.exam import *
-from env_variables import RESOURCES_FOLDER
+from constants.env_variables import RESOURCES_FOLDER
 from dtos.deck_dto import DeckDto
 from adapters.deck_adapter import DeckAdapter
 
