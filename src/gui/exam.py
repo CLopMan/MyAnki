@@ -1,23 +1,27 @@
 from data_objects.deck import Deck
 from data_objects.normal_question import NormalQuestion
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QGridLayout, QProgressBar
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from gui.normal_question_widget import NormalQuestionWidget
+from constants.gui_constants import EXERCISE_WIDTH
 
 
 class Exam(QWidget):
     def __init__(self, deck: Deck, sequence: list[int]):
         layout = QGridLayout()
-        layout.setColumnMinimumWidth(1, 300)
+        layout.setColumnMinimumWidth(1, EXERCISE_WIDTH)
 
         super().__init__()
         self.deck: Deck = deck
         self.sequence = sequence
         self.curr_index = 0
         self.questions = self.__get_questions(layout)
+        self.answered: int = 0
 
         layout.addWidget(self.title(), 0, 0, 1, 3, Qt.AlignHCenter)
+        self.progress_bar = self.build_progress_bar()
+        layout.addWidget(self.progress_bar, 1, 0, 1, 3, Qt.AlignHCenter)
 
         self.index_widget = self.create_index()
         self.__update_index()
@@ -48,6 +52,15 @@ class Exam(QWidget):
         index_widget.setAlignment(Qt.AlignHCenter)
         return index_widget
 
+    def build_progress_bar(self):
+        bar = QProgressBar()
+        bar.setMaximum(len(self.sequence))
+        bar.setMinimum(0)
+        bar.setValue(0)
+        return bar
+
+    def update_progress_bar(self):
+        self.progress_bar.setValue(self.answered)
 
     def title(self):
         title: QLabel = QLabel()
@@ -67,7 +80,8 @@ class Exam(QWidget):
                 curr = NormalQuestionWidget(question)
                 curr.setVisible(False)
                 result.append(curr)
-                layout.addWidget(curr, 1, 1)
+                curr.show_button.clicked.connect(self.__update_answered)
+                layout.addWidget(curr, 2, 1)
         return result
 
     def __advance(self, n: int):
@@ -78,6 +92,10 @@ class Exam(QWidget):
         self.curr_index = (self.curr_index + n) % self.deck.card_num
         self.questions[self.curr_index].setVisible(True)
         self.__update_index()
+
+    def __update_answered(self):
+        self.answered += 1
+        self.update_progress_bar()
 
     def __update_index(self):
         self.index_widget.setText(f"{self.curr_index + 1}/{len(self.sequence)}")
