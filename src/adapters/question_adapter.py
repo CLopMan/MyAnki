@@ -1,4 +1,5 @@
 from data_objects.normal_question import NormalQuestion
+from data_objects.true_false_question import TrueFalseQuestion
 from data_objects.question import Question
 from dtos.question_dto import QuestionType, QuestionDto
 
@@ -21,8 +22,18 @@ class QuestionAdapter:
     def __adapt_multiselect(self, question):
         return NotImplemented
 
-    def __adapt_true_false(self, question):
-        return NotImplemented
+    def __adapt_true_false(self, question: QuestionDto):
+        answers = {}
+        for right in question.right_answers:
+            answers[right] = True
+        for wrong in question.wrong_answers:
+            answers[wrong] = False
+
+        return TrueFalseQuestion(
+                    question=question.question,
+                    tags=question.tags,
+                    answers=answers
+                )
 
     def __adapt_normal(self, question: QuestionDto) -> NormalQuestion:
         return NormalQuestion(

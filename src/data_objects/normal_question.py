@@ -1,5 +1,6 @@
 from .question import Question
 
+
 class NormalQuestion(Question):
     right_answer: str
 

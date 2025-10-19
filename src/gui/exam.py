@@ -1,10 +1,12 @@
 from data_objects.deck import Deck
 from data_objects.normal_question import NormalQuestion
+from data_objects.true_false_question import TrueFalseQuestion
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QGridLayout, QProgressBar
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from gui.question_widget import QuestionWidget
 from gui.normal_question_widget import NormalQuestionWidget
+from gui.true_false_question_widget import TrueFalseQuestionWidget
 from constants.gui_constants import EXERCISE_WIDTH
 
 
@@ -74,7 +76,7 @@ class Exam(QWidget):
         #title.setStyleSheet("border: 1px solid red;")
         return title
 
-    def __get_questions(self, layout: QGridLayout) -> list[QWidget]:
+    def __get_questions(self, layout: QGridLayout) -> list[QuestionWidget]:
         result: list[QuestionWidget] =  []
         cards = self.deck.questions
         for i in self.sequence:
@@ -85,6 +87,13 @@ class Exam(QWidget):
                 result.append(curr)
                 curr.show_button.clicked.connect(self.__update_answered)
                 layout.addWidget(curr, 2, 1)
+            if isinstance(question, TrueFalseQuestion):
+                curr = TrueFalseQuestionWidget(question)
+                curr.setVisible(False)
+                result.append(curr)
+                curr.show_button.clicked.connect(self.__update_answered)
+                layout.addWidget(curr, 2, 1)
+
         return result
 
     def __advance(self, n: int):
@@ -101,7 +110,7 @@ class Exam(QWidget):
 
     def __update_answered(self):
         question: QuestionWidget = self.questions[self.curr_index]
-        self.answered += question.value * int(not self.questions_answer[self.curr_index])
+        self.answered += int(not self.questions_answer[self.curr_index])
         self._answer(self.curr_index)
         self.update_progress_bar()
 

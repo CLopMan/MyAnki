@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
+from PyQt5.QtGui import QFont
 from data_objects.question import Question
 from constants.gui_constants import *
 
@@ -6,8 +7,8 @@ class QuestionWidget(QWidget):
     def __init__(self, question: Question):
         super().__init__()
         self.data = question
-        self.exercise: QLabel = self.create_exercise()
-        self.answer: QLabel = self.create_answer()
+        self.exercise: QWidget = self.create_exercise()
+        self.answer: QWidget = self.create_answer()
         self.show_button: QPushButton = QPushButton("SHOW ANSWER")
         self.value = question.value
 
@@ -27,7 +28,10 @@ class QuestionWidget(QWidget):
         return NotImplemented
 
     def create_exercise(self) -> QLabel:
-        return QLabel(self.data.question)
+        result = QLabel(self.data.question)
+        result.setFont(QFont('Arial', 16))
+        result.setWordWrap(True)
+        return result
 
     def show_answer(self):
         self.answer.setVisible(True)

@@ -1,19 +1,13 @@
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtGui import QFont
 from data_objects.normal_question import NormalQuestion
 from gui.question_widget import QuestionWidget
+
 
 class NormalQuestionWidget(QuestionWidget):
     def __init__(self, question: NormalQuestion):
         super().__init__(question)
         self.data: NormalQuestion = question # not necesary. Added for typehinting in the editor
         self.setStyleSheet("border: 1px solid red")
-
-    def create_exercise(self) -> QLabel:
-        result = QLabel(self.data.question)
-        result.setFont(QFont('Arial', 16))
-        result.setWordWrap(True)
-        return result
 
     def show_answer(self):
         self.answer.setVisible(True)
