@@ -11,6 +11,7 @@ class QuestionWidget(QWidget):
         self.answer: QWidget = self.create_answer()
         self.show_button: QPushButton = QPushButton("SHOW ANSWER")
         self.value = question.value
+        self.correct: bool|None = None
 
         layout = QVBoxLayout()
         layout.addWidget(self.exercise)
@@ -23,6 +24,15 @@ class QuestionWidget(QWidget):
     @property
     def is_answered(self):
         return self.answer.isVisible()
+
+    def _set_correct(self, val):
+        self.correct = val
+    
+    def set_correct(self):
+        self._set_correct(True)
+
+    def set_wrong(self):
+        self._set_correct(False)
 
     def create_answer(self):
         return NotImplemented

@@ -21,6 +21,13 @@
             "right_answers": ["rojo"],
             "wrong_answers": [""],
             "tags": ["a", "b", "c", "tag2"]
+        },
+        {
+            "question_type": "trueFalse",
+            "question": "Marca las verdaderas",
+            "right_answers": ["Pi = 3", "pepe es majo"],
+            "wrong_answers": ["soy falsa"],
+            "tags": ["a", "b", "c", "tag2"]
         }
     ]
 }
