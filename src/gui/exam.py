@@ -7,8 +7,8 @@ from PyQt5.QtCore import Qt
 from gui.question_widget import QuestionWidget
 from gui.normal_question_widget import NormalQuestionWidget
 from gui.true_false_question_widget import TrueFalseQuestionWidget
-from constants.gui_constants import EXERCISE_WIDTH
-
+from gui.finish_widget import FinishWidget
+from constants.gui_constants import EXERCISE_WIDTH, COLUMNS
 
 class Exam(QWidget):
     def __init__(self, deck: Deck, sequence: list[int]):
@@ -30,6 +30,11 @@ class Exam(QWidget):
         self.index_widget = self.create_index()
         self.__update_index()
 
+        self.finish_widget: FinishWidget = FinishWidget(len(self.questions), COLUMNS)
+        self.finish_widget.setVisible(False)
+
+        layout.addWidget(self.finish_widget, 2, 1)
+
         bottom_layout = QVBoxLayout()
         bottom_layout.addWidget(self.index_widget)
 
@@ -43,6 +48,12 @@ class Exam(QWidget):
         button_layout.addWidget(prev)
         button_layout.addWidget(next_q)
         bottom_layout.addLayout(button_layout)
+        self.prev = prev
+        self.next = next_q
+        self.finish_exam_button = QPushButton("QUIT EXAM")
+        self.finish_exam_button.clicked.connect(lambda : self.close())
+        self.finish_exam_button.setVisible(False)
+        button_layout.addWidget(self.finish_exam_button)
 
         layout.addLayout(bottom_layout, 3, 0, 1, 3, Qt.AlignHCenter)
 
@@ -98,19 +109,24 @@ class Exam(QWidget):
 
     def __advance(self, n: int):
         if self.curr_index + n >= len(self.sequence) or self.curr_index + n < 0:
-            # finish
+            if (self.curr_index == len(self.questions) - 1):
+                self.__finish()
             return 
         self.questions[self.curr_index].setVisible(False)
         self.curr_index = (self.curr_index + n) % self.deck.card_num
         self.questions[self.curr_index].setVisible(True)
         self.__update_index()
+        if (self.curr_index == len(self.questions) - 1):
+            self.next.setText("FINISH")
+        else:
+            self.next.setText("NEXT")
 
     def _answer(self, index):
         self.questions_answer[index] = True
 
     def __update_answered(self):
         question: QuestionWidget = self.questions[self.curr_index]
-        self.answered += int(not self.questions_answer[self.curr_index])
+        self.answered += 1
         self._answer(self.curr_index)
         self.update_progress_bar()
 
@@ -119,6 +135,14 @@ class Exam(QWidget):
 
     def next_question(self):
         self.__advance(1)
+    
+    def __finish(self):
+        self.questions[self.curr_index].setVisible(False)
+        self.finish_widget.update_result(self.questions)
+        self.finish_widget.setVisible(True)
+        self.finish_exam_button.setVisible(True)
+        self.prev.setVisible(False)
+        self.next.setVisible(False)
 
     def prev_question(self):
         self.__advance(-1)

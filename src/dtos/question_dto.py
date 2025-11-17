@@ -14,3 +14,4 @@ class QuestionDto(BaseModel):
     wrong_answers: list[str]
     value: Optional[int] = None
     tags: list[str]
+    next_time: str | None = None
