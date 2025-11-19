@@ -125,8 +125,7 @@ class Exam(QWidget):
         self.questions_answer[index] = True
 
     def __update_answered(self):
-        question: QuestionWidget = self.questions[self.curr_index]
-        self.answered += 1
+        self.answered += not self.questions_answer[self.curr_index]
         self._answer(self.curr_index)
         self.update_progress_bar()
 

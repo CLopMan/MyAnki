@@ -1,85 +1,85 @@
 from PyQt5.QtWidgets import *
+#from PyQt5.Qt import ScrollBarAllwaysOff, ScrollBarAllwaysOn
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from os import listdir
-from data_objects.deck import Deck, Question
-from abc import ABC
+from data_objects.deck import Deck
+from adapters.deck_adapter import DeckAdapter
+from dtos.deck_dto import DeckDto
+from constants.env_variables import RESOURCES_FOLDER
+from gui.deck_selector_widget import DeckSelectorWidget
 
 
-
-
-
-class DeckSelectorWidget(QWidget):
-    def __init__(self, parent: QWidget|None, deck: Deck):
+class DeckScrollableArray(QScrollArea):
+    def __init__(self, parent = None, items: list[Deck]|None = None):
         super().__init__(parent)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setWidgetResizable(True)
 
-        layout = QVBoxLayout(self)
-        title_label = QLabel(deck.title)
+        if items is None:
+            self.items = []
+        else:
+            self.items = items
 
-        down_layout = self.down_layout(deck.card_num)
+        self.items_ui = []
 
+        self.init_ui()
 
-        layout.addWidget(title_label, 2)
-        layout.addLayout(down_layout, 1)
-        
-        self.setLayout(layout)
-        self.setMaximumSize(300,100)
+        self.setStyleSheet("border: 1px solid red")
 
-    def down_layout(self, card_num: int):
-        card_num_label = QLabel(str(card_num) + " cards")
-        card_num_label.setAlignment(Qt.AlignCenter)
-        card_num_label.setMaximumHeight(30)
-
-        start_button = QPushButton("START")
-        start_button.clicked.connect(self.start_deck)
-        start_button.clicked.connect(lambda : print("pressed start"))
-
-        objetive = QTextEdit()
-        objetive.setPlaceholderText(str(card_num))
-        objetive_label = QLabel("Goal")
-        objetive_label.setAlignment(Qt.AlignCenter)
-        objetive.setMaximumHeight(30)
-
-        goal_layout = QHBoxLayout()
-        goal_layout.addWidget(objetive_label)
-        goal_layout.addWidget(objetive)
-
-        down_layout = QHBoxLayout()
-        down_layout.addWidget(card_num_label, 1)
-        down_layout.addWidget(start_button, 1)
-        down_layout.addLayout(goal_layout, 1)
-        return down_layout
-    
-    def start_deck(self):
-        pass
+    def init_ui(self):
+        self.items_ui = []
+        layout = QVBoxLayout()
+        container = QWidget()
+        self.setWidget(container)
+        for i, d in enumerate(self.items):
+            self.items_ui.append(DeckSelectorWidget(self, d))
+            layout.addWidget(self.items_ui[i])
+        container.setLayout(layout)
 
 
-class DeckScrollableArray(QWidget):
-    decks: dict[str, Deck] = {}
-    def __init__(self):
-        pass
+    def add_deck(self, deck: Deck):
+        deck_widget = DeckSelectorWidget(deck=deck, parent=self)
+        self.deck_cards.append(deck_widget)
+        self.vlayout.addWidget(deck_widget)
 
-    def add_deck(self, deck):
-        pass
+    def remove_deck(self, index):
+        remove = self.deck_cards.pop(index)
+        self.vlayout.removeWidget(remove)
 
-    def remove_deck(self, deck):
-        pass
 
 
 class MainWindow(QWidget):
-    def __init__(self) -> None:
+    def __init__(self, app) -> None:
         super().__init__()
+        self.app = app
+        deck_adapter = DeckAdapter()
+        aux = QVBoxLayout()
+        decks: list[Deck] = []
+        for file in self.app.get_decks():
+            with open(RESOURCES_FOLDER / file, "r") as fd:
+                try:
+                    deck_dto = DeckDto.model_validate_json(fd.read())
+                    decks.append(deck_adapter.adapt_deck(deck_dto))
+                    #aux.addWidget(DeckSelectorWidget(self, adapted_deck))
+                    #self.deck_set.add_deck(adapted_deck)
+                except Exception as e:
+                    print(f"deck could not be parsed: {file}\n\t{str(e)}")
+
+        #aux.addWidget(self.deck_set)
+        self.decks_widget = DeckScrollableArray(self, decks)
+        aux.addWidget(self.decks_widget)
         self.setWindowTitle("Let's study")
         self.resize(int(1920 * 0.7), int(1080 * 0.7))
-        aux = QVBoxLayout()
-        aux.addWidget(DeckSelectorWidget(self, Deck("testdeck")))
         self.setLayout(aux)
 
 class App(QApplication):
+
     def __init__(self, resources_folder_path, argv: list = []):
         super().__init__(argv)
         self.resources_folder_path = resources_folder_path
+
     def get_decks(self):
-        print(listdir(self.resources_folder_path))
-        pass
+        return list(listdir(self.resources_folder_path))
 
