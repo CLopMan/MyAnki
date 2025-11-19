@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import *
-#from PyQt5.Qt import ScrollBarAllwaysOff, ScrollBarAllwaysOn
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from os import listdir
@@ -11,7 +10,7 @@ from gui.deck_selector_widget import DeckSelectorWidget
 
 
 class DeckScrollableArray(QScrollArea):
-    def __init__(self, parent = None, items: list[Deck]|None = None):
+    def __init__(self, parent: QWidget, items: list[Deck]|None = None):
         super().__init__(parent)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -25,8 +24,13 @@ class DeckScrollableArray(QScrollArea):
         self.items_ui = []
 
         self.init_ui()
+        w, h = int(self.parentWidget().width()), int(self.parentWidget().height())
+        print(w, h)
+        self.setGeometry(0, 0, w//2, h)
+        self.setFixedSize(w//2, h)
+        print(self.width(), self.height())
 
-        self.setStyleSheet("border: 1px solid red")
+#        self.setStyleSheet("border: 1px solid red")
 
     def init_ui(self):
         self.items_ui = []
@@ -40,13 +44,12 @@ class DeckScrollableArray(QScrollArea):
 
 
     def add_deck(self, deck: Deck):
-        deck_widget = DeckSelectorWidget(deck=deck, parent=self)
-        self.deck_cards.append(deck_widget)
-        self.vlayout.addWidget(deck_widget)
+        raise NotImplemented
 
     def remove_deck(self, index):
-        remove = self.deck_cards.pop(index)
-        self.vlayout.removeWidget(remove)
+        raise NotImplemented
+
+
 
 
 

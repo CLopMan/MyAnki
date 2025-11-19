@@ -31,7 +31,9 @@ class DeckSelectorWidget(QWidget):
 
         objetive = QTextEdit()
         objetive.setPlaceholderText(str(card_num))
-        objetive_label = QLabel("Goal")
+        objetive_label = QLabel("Cards to study")
+        objetive_label.setWordWrap(True)
+        
         objetive_label.setAlignment(Qt.AlignCenter)
         objetive.setMaximumHeight(30)
 
