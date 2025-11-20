@@ -13,3 +13,27 @@ MyAnki is a personal project to develop a light app to study for exams through f
     json@{ shape: docs, label: "decks stored as json"} <-->|Adapter| D(Data object)
     D <--> G[\GUI\]
 ```
+
+## Functionality
+### Must have
+- [x] Normal question
+- [x] True False question
+- [ ] Combo box questions
+- [x] Main window launcher
+- [x] Custom card number exam
+- [ ] question editor(edit, add, delete)
+- [ ] Deck Creation
+- [ ] Image in questions
+- [ ] JSON exportation
+
+### Nice to have
+- [ ] Time to remember functionality
+- [ ] Tag filtering
+- [ ] Deck fusing
+- [ ] Stopwatch / timer for the exam
+- [ ] Exam result
+- [ ] Repeat Failed
+- [ ] Main window improvement
+- [ ] Light / Dark theme
+- [ ] Editable style / themes
+    - Extract everyhing to css 
