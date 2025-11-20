@@ -68,14 +68,16 @@ class DeckSelectorWidget(QWidget):
             value: int = self.__validate_goal_text(self.objetive.toPlainText())
         except ValueError as e:
             print("Cannot estart the exam because of bad input") # TODO: warn message
-            w = QWidget()
-            b = QPushButton("Close")
-            b.clicked.connect(lambda : w.close() )
-            w.setLayout(QVBoxLayout())
-            w.layout().addWidget(QLabel(str(e)))
-            w.layout().addWidget(b)
-            w.show()
-            return 
+            w = QDialog(self)
+            w.setWindowTitle("Error")
+            b = QPushButton("Accept")
+            b.clicked.connect(w.accept)
+            layout = QVBoxLayout()
+            w.setLayout(layout)
+            layout.addWidget(QLabel(str(e)))
+            layout.addWidget(b)
+            w.exec()
+            return
 
         exam = Exam(deck=self.deck, sequence=random.sample(range(len(self.deck)), value))
         exam.show()

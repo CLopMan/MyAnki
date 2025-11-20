@@ -8,6 +8,7 @@ from gui.question_widget import QuestionWidget
 from gui.normal_question_widget import NormalQuestionWidget
 from gui.true_false_question_widget import TrueFalseQuestionWidget
 from gui.finish_widget import FinishWidget
+from gui.warning_dialog import WarningDialog
 from constants.gui_constants import EXERCISE_WIDTH, COLUMNS
 
 class Exam(QWidget):
@@ -118,8 +119,10 @@ class Exam(QWidget):
         self.__update_index()
         if (self.curr_index == len(self.questions) - 1):
             self.next.setText("FINISH")
+            self.next.setStyleSheet("background: #4472c4")
         else:
             self.next.setText("NEXT")
+            self.next.setStyleSheet("")
 
     def _answer(self, index):
         self.questions_answer[index] = True
@@ -136,12 +139,15 @@ class Exam(QWidget):
         self.__advance(1)
     
     def __finish(self):
-        self.questions[self.curr_index].setVisible(False)
-        self.finish_widget.update_result(self.questions)
-        self.finish_widget.setVisible(True)
-        self.finish_exam_button.setVisible(True)
-        self.prev.setVisible(False)
-        self.next.setVisible(False)
+        dlg = WarningDialog(self, f"Are you sure you want to finish the exam?\nYou have answer {self.answered} out of {len(self.questions)} questions", "Finish Exam?")
+        if dlg.exec():
+            self.questions[self.curr_index].setVisible(False)
+            self.finish_widget.update_result(self.questions)
+            self.finish_widget.setVisible(True)
+            self.finish_exam_button.setVisible(True)
+
+            self.prev.setVisible(False)
+            self.next.setVisible(False)
 
     def prev_question(self):
         self.__advance(-1)

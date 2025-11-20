@@ -53,29 +53,26 @@ class DeckScrollableArray(QScrollArea):
 
 
 
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self, app) -> None:
         super().__init__()
         self.app = app
         deck_adapter = DeckAdapter()
-        aux = QVBoxLayout()
         decks: list[Deck] = []
         for file in self.app.get_decks():
             with open(RESOURCES_FOLDER / file, "r") as fd:
                 try:
                     deck_dto = DeckDto.model_validate_json(fd.read())
                     decks.append(deck_adapter.adapt_deck(deck_dto))
-                    #aux.addWidget(DeckSelectorWidget(self, adapted_deck))
                     #self.deck_set.add_deck(adapted_deck)
                 except Exception as e:
                     print(f"deck could not be parsed: {file}\n\t{str(e)}")
 
-        #aux.addWidget(self.deck_set)
         self.decks_widget = DeckScrollableArray(self, decks)
-        aux.addWidget(self.decks_widget)
+        self.setCentralWidget(self.decks_widget)
         self.setWindowTitle("Let's study")
         self.resize(int(1920 * 0.7), int(1080 * 0.7))
-        self.setLayout(aux)
+        self.decks_widget.move(self.rect().center())
 
 class App(QApplication):
 
