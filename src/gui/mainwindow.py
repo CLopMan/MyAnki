@@ -25,12 +25,8 @@ class DeckScrollableArray(QScrollArea):
 
         self.init_ui()
         w, h = int(self.parentWidget().width()), int(self.parentWidget().height())
-        print(w, h)
         self.setGeometry(0, 0, w//2, h)
         self.setFixedSize(w//2, h)
-        print(self.width(), self.height())
-
-#        self.setStyleSheet("border: 1px solid red")
 
     def init_ui(self):
         self.items_ui = []
@@ -42,15 +38,11 @@ class DeckScrollableArray(QScrollArea):
             layout.addWidget(self.items_ui[i])
         container.setLayout(layout)
 
-
     def add_deck(self, deck: Deck):
         raise NotImplemented
 
     def remove_deck(self, index):
         raise NotImplemented
-
-
-
 
 
 class MainWindow(QMainWindow):
