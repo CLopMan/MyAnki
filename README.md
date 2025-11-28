@@ -28,7 +28,7 @@ MyAnki is a personal project to develop a light app to study for exams through f
 
 ### Nice to have
 - [ ] Time to remember functionality
-- [ ] Tag filtering
+- [x] Tag filtering
 - [ ] Deck fusing
 - [ ] Stopwatch / timer for the exam
 - [ ] Exam result
