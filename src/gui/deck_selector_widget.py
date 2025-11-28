@@ -48,7 +48,7 @@ class DeckSelectorWidget(QWidget):
         title_label = QLabel(deck.title)
 
         down_layout = self.down_layout(deck.card_num)
-        self.msg = QLabel("filtered: None")
+        self.msg = QLabel("Filtered: None")
 
         layout.addWidget(title_label, 2)
         layout.addWidget(self.msg, 2)
@@ -94,6 +94,12 @@ class DeckSelectorWidget(QWidget):
 
     def custom_study_menu(self):
         self.custom_menu.exec()
+        filtered = self.custom_menu.get_filtered()
+
+        if len(filtered) > 0:
+            self.msg.setText(f"Filtered: {filtered}")
+        else:
+            self.msg.setText(f"Filtered: None")
 
     @staticmethod
     def __validate_goal_text(value: str, deck: Deck) -> int:
