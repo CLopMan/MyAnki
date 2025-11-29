@@ -34,6 +34,29 @@
             "next_time": null
         },
         {
+            "question_type": "combobox",
+            "question": "Combo box question",
+            "comboboxes": [
+                {
+                    "question": "Primera question",
+                    "options": ["primer", "segun", "tercer", "esta quiero que sea un poco más larga"],
+                    "correct": 1
+                },
+                {
+                    "question": "Segunda question",
+                    "options": ["cami", "kaze", "AHHH"],
+                    "correct": "AHHH"
+                },
+                {
+                    "question": "Frase más repetida por Alejandor G.",
+                    "options": ["CONOPS", "Absolutly", "totally", "»€@ſ»"],
+                    "correct": "Absolutly"
+                }
+            ],
+            "tags": ["a", "b", "c", "tag2", "combobox"],
+            "next_time": null
+        },
+        {
             "question_type": "trueFalse",
             "question": "Cuándo es el cumpleaños de Juan Felipe MASI",
             "right_answers": ["15 de enero de 1997", "15-01-97"],

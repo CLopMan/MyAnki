@@ -1,12 +1,14 @@
 from data_objects.deck import Deck
 from data_objects.normal_question import NormalQuestion
 from data_objects.true_false_question import TrueFalseQuestion
+from data_objects.combo_box_question import ComboBoxQuestion
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QGridLayout, QProgressBar
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from gui.question_widget import QuestionWidget
 from gui.normal_question_widget import NormalQuestionWidget
 from gui.true_false_question_widget import TrueFalseQuestionWidget
+from gui.combo_box_question_widget import ComboBoxQuestionWidget
 from gui.finish_widget import FinishWidget
 from gui.warning_dialog import WarningDialog
 from constants.gui_constants import EXERCISE_WIDTH, COLUMNS
@@ -101,6 +103,12 @@ class Exam(QWidget):
                 layout.addWidget(curr, 2, 1)
             if isinstance(question, TrueFalseQuestion):
                 curr = TrueFalseQuestionWidget(question)
+                curr.setVisible(False)
+                result.append(curr)
+                curr.show_button.clicked.connect(self.__update_answered)
+                layout.addWidget(curr, 2, 1)
+            if isinstance(question, ComboBoxQuestion):
+                curr = ComboBoxQuestionWidget(question)
                 curr.setVisible(False)
                 result.append(curr)
                 curr.show_button.clicked.connect(self.__update_answered)
