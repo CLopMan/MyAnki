@@ -13,7 +13,7 @@ class QuestionAdapter:
             QuestionType.true_false: self.__adapt_true_false
         }
 
-    def adapt_questions(self, questions) -> list[Question]:
+    def adapt_questions(self, questions: list[QuestionDto]) -> list[Question]:
         result: list[Question] = []
         for q in questions:
             result.append(self.map.get(q.question_type, lambda _: None)(q))
@@ -26,13 +26,13 @@ class QuestionAdapter:
                   correct=option.correct
             )
 
-    def __adapt_combo_box(self, question):
+    def __adapt_combo_box(self, question: ComboBoxDto):
         return ComboBoxQuestion(
                     question=question.question,
                     tags=question.tags,
-                    options=[self.__adapt_combo_option(op) for op in question.comboboxes]
+                    options=[self.__adapt_combo_option(op) for op in question.comboboxes],
+                    image=question.img
                 )
-
 
     def __adapt_true_false(self, question: NormalDto):
         answers = {}
@@ -44,14 +44,15 @@ class QuestionAdapter:
         return TrueFalseQuestion(
                     question=question.question,
                     tags=question.tags,
-                    answers=answers
+                    answers=answers,
+                    image=question.img
                 )
 
     def __adapt_normal(self, question: NormalDto) -> NormalQuestion:
         return NormalQuestion(
                     question=question.question,
                     tags=question.tags,
-                    right=question.right_answers[0]
+                    right=question.right_answers[0],
+                    image=question.img
                 )
-        
         

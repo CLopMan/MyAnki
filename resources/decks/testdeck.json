@@ -15,7 +15,8 @@
             "right_answers": ["manzana"],
             "wrong_answers": [""],
             "tags": ["comida", "favoritismo"],
-            "next_time": null
+            "next_time": null,
+            "img": "apple.png"
         },
         {
             "question_type": "normal",
@@ -31,11 +32,13 @@
             "right_answers": ["Pi = 3", "pepe es majo"],
             "wrong_answers": ["soy falsa"],
             "tags": ["a", "b", "c", "tag2"],
+            "img": "jaja.png",
             "next_time": null
         },
         {
             "question_type": "combobox",
             "question": "Combo box question",
+            "img": "apple.png",
             "comboboxes": [
                 {
                     "question": "Primera question",

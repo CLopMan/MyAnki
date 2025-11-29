@@ -23,7 +23,7 @@ MyAnki is a personal project to develop a light app to study for exams through f
 - [x] Custom card number exam
 - [ ] question editor(edit, add, delete)
 - [ ] Deck Creation
-- [ ] Image in questions
+- [x] Image in questions
 - [ ] JSON exportation
 
 ### Nice to have

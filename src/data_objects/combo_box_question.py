@@ -25,8 +25,8 @@ class ComboBoxOption:
         return (answer == self.correct)
         
 class ComboBoxQuestion(Question):
-    def __init__(self, question, tags, options: list[ComboBoxOption]):
-        super().__init__(question, tags)
+    def __init__(self, question, tags, options: list[ComboBoxOption], image: str|None = None):
+        super().__init__(question, tags, image=image)
         self.options: dict[str, ComboBoxOption] = {op.exercise: op for op in options}
 
 

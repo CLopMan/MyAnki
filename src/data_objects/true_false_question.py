@@ -2,8 +2,8 @@ from data_objects.question import Question
 
 
 class TrueFalseQuestion(Question):
-    def __init__(self, question, tags, answers: dict[str, bool]):
-        super().__init__(question, tags)
+    def __init__(self, question, tags, answers: dict[str, bool], image: str|None = None):
+        super().__init__(question, tags, image=image)
         self.answers = answers
         self.answer_num = len(answers.keys())
 

@@ -11,9 +11,10 @@ class QuestionType(Enum):
 class QuestionDto(BaseModel):
     question: str
     question_type: QuestionType
-    value: Optional[int] = None
     tags: list[str]
     next_time: str | None = None
+    value: Optional[int] = None
+    img: Optional[str] = None
 
 class NormalDto(QuestionDto):
     right_answers: list[str]
