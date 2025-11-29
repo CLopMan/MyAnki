@@ -18,7 +18,7 @@ MyAnki is a personal project to develop a light app to study for exams through f
 ### Must have
 - [x] Normal question
 - [x] True False question
-- [ ] Combo box questions
+- [x] Combo box questions
 - [x] Main window launcher
 - [x] Custom card number exam
 - [ ] question editor(edit, add, delete)
