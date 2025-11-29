@@ -6,6 +6,8 @@ from adapters.deck_adapter import DeckAdapter
 from dtos.deck_dto import DeckDto
 from constants.env_variables import RESOURCES_FOLDER
 
+DECK_FOLDER = RESOURCES_FOLDER / "decks"
+
 
 class MainWindow(QMainWindow):
     def __init__(self, app) -> None:
@@ -14,7 +16,7 @@ class MainWindow(QMainWindow):
         deck_adapter = DeckAdapter()
         decks: list[Deck] = []
         for file in self.app.get_decks():
-            with open(RESOURCES_FOLDER / file, "r") as fd:
+            with open(DECK_FOLDER / file, "r") as fd:
                 try:
                     deck_dto = DeckDto.model_validate_json(fd.read())
                     decks.append(deck_adapter.adapt_deck(deck_dto))

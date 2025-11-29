@@ -8,5 +8,5 @@ class App(QApplication):
         self.resources_folder_path = resources_folder_path
 
     def get_decks(self):
-        return list(listdir(self.resources_folder_path))
+        return list(listdir(self.resources_folder_path / "decks"))
 
