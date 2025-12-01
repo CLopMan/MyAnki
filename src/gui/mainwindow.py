@@ -10,12 +10,11 @@ DECK_FOLDER = RESOURCES_FOLDER / "decks"
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, app) -> None:
+    def __init__(self, deck_paths: list[str]) -> None:
         super().__init__()
-        self.app = app
         deck_adapter = DeckAdapter()
         decks: list[Deck] = []
-        for file in self.app.get_decks():
+        for file in deck_paths:
             with open(DECK_FOLDER / file, "r") as fd:
                 try:
                     deck_dto = DeckDto.model_validate_json(fd.read())
