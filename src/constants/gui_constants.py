@@ -5,3 +5,5 @@ COLUMNS = 5
 
 RESULT_WIDTH = 50
 RESULT_HEIGH = 50
+
+APP_TITLE = "Let's study"

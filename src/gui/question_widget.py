@@ -9,6 +9,7 @@ from constants.env_variables import RESOURCES_FOLDER
 class QuestionWidget(QWidget):
     def __init__(self, question: Question):
         super().__init__()
+        self.resources = RESOURCES_FOLDER
         self.data = question
         self.exercise: QWidget = self.create_exercise()
         self.answer: QWidget = self.create_answer()
@@ -49,9 +50,9 @@ class QuestionWidget(QWidget):
 
         if self.data.image is not None:
             img = QLabel()
-            path = str(RESOURCES_FOLDER / "imgs" / self.data.image)
+            path = str(self.resources / "imgs" / self.data.image)
             if exists(path):
-                pxmap = QPixmap(path).scaledToWidth(100)
+                pxmap = QPixmap(path).scaledToWidth(150)
                 img.setPixmap(pxmap)
             else:
                 img.setText(f"Unable to open {self.data.image}")

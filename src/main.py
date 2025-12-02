@@ -5,5 +5,5 @@ from constants.env_variables import RESOURCES_FOLDER
 
 if __name__ == "__main__":
     app = App(RESOURCES_FOLDER)
-    app.exec_()
+    app.myexec()
 
