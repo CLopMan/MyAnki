@@ -16,21 +16,15 @@ class QuestionEditor(QDialog):
         self.true_false_editor = self.__back_constructor(QuestionType.true_false)
         self.combo_box_editor = self.__back_constructor(QuestionType.combo_box)
 
-        print("1___")
         self.editor_container.setLayout(QStackedLayout())
-        print("2___")
         self.editor_container.layout().addWidget(self.normal_editor)
         self.editor_container.layout().addWidget(self.true_false_editor)
-        self.editor_container.layout().children()
-        #self.editor_container.layout().addWidget(self.combo_box_editor)
-        print("3___")
+        self.editor_container.layout().addWidget(self.combo_box_editor)
 
         self.button_menu = self.__button_menu()
         self.created_question: Question|None = None
 
-        print("___")
         self.__question_type_updator(self.question_type)
-        print("___")
 
         layout.addWidget(exercise)
         layout.addWidget(selector)
@@ -122,7 +116,23 @@ class QuestionEditor(QDialog):
                 return w
 
             case QuestionType.combo_box:
-                pass
+                super_layout = QVBoxLayout()
+                layout = QVBoxLayout()
+                option_edit = QTextEdit()
+                Option_checkbox = QCheckBox()
+                option_layout = QHBoxLayout()
+                option_layout.addWidget(option_edit)
+                option_layout.addWidget(Option_checkbox)
+                layout.addLayout(option_layout)
+                super_layout.addLayout(layout)
+
+                add_option = QPushButton("+")
+                add_option.clicked.connect(lambda : self.add_option() )
+                super_layout.addWidget(add_option)
+                
+                w = QWidget()
+                w.setLayout(super_layout)
+                return w
             case _:
                 Exception(f"Unrecognized question_type {question_type}")
 
@@ -145,11 +155,9 @@ class QuestionEditor(QDialog):
             case QuestionType.normal:
                 self.editor_container.layout().setCurrentIndex(0)
             case QuestionType.true_false:
-                print(self.editor_container.layout().children())
                 self.editor_container.layout().setCurrentIndex(1)
             case QuestionType.combo_box:
-                return
-                self.editor_container.setLayout(self.combo_box_editor)
+                self.editor_container.layout().setCurrentIndex(2)
             case _:
                 Exception(f"Unrecognized question_type {self.question_type}")
         

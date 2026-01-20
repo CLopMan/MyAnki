@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 from os import listdir
 from gui.mainwindow import MainWindow
-from gui.question_editor import QuestionEditor
+from gui.question_editor_cleanup import QuestionForm
 
 class App(QApplication):
 
@@ -9,7 +9,7 @@ class App(QApplication):
         super().__init__(argv)
         self.resources_folder_path = resources_folder_path
         #self.main_window = MainWindow(self.get_decks(), resources_folder_path)
-        self.main_window = QuestionEditor(None)
+        self.main_window = QuestionForm(None)
 
     def get_decks(self):
         return list(listdir(self.resources_folder_path / "decks"))
